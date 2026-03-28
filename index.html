@@ -396,7 +396,7 @@ async function speak(text) {
   setSpeakingUI(true);
 
   try {
-    const res = await fetch('https://YOUR-VERCEL-URL/api/tts', {
+    const res = await fetch('https://menu-trainer-one.vercel.app/api/voice', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
