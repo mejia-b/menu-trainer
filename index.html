@@ -563,7 +563,7 @@ function checkAnswer() {
     spokenMsg = `Keep practicing! You only got ${matched.length} out of ${d.ingredients.length}. The missing ingredients were ${missed.join(', ')}.`;
   }
   showFeedback(cls, msg);
-  speak(spokenMsg);
+  //speak(spokenMsg);
   saveScores(); updateHeaderStats();
 }
 
