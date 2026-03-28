@@ -1,21 +1,30 @@
 import fetch from "node-fetch";
 
 export default async function handler(req, res) {
+  // CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  // Handle preflight request
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { text, voice } = req.body;
+  const { text, voiceId } = req.body; // matches frontend
 
-  if (!text || !voice) {
-    return res.status(400).json({ error: "Missing text or voice" });
+  if (!text || !voiceId) {
+    return res.status(400).json({ error: "Missing text or voiceId" });
   }
 
-  // YOUR SECRET API KEY (never exposed to frontend)
   const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
 
   try {
-    const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voice}`, {
+    const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -29,11 +38,9 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: errorText });
     }
 
-    // Get audio buffer
     const arrayBuffer = await response.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Send audio as response
     res.setHeader("Content-Type", "audio/mpeg");
     res.send(buffer);
 
