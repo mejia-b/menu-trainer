@@ -502,6 +502,7 @@ function restoreCardHTML() {
 
 // Card rendering
 function renderCard() {
+  restoreCardHTML();
   clearFeedback(); clearInput(); isFlipped = false;
   const ci = document.getElementById('card-inner');
   if (ci) ci.classList.remove('flipped');
@@ -514,7 +515,7 @@ function renderCard() {
       </div>`;
     document.getElementById('counter').textContent = '0 cards';
     document.getElementById('progress').style.width = '0%';
-    restoreCardHTML();
+    
     return;
   }
 
