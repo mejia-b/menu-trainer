@@ -14,6 +14,8 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'ElevenLabs API key not configured' });
   }
 
+  console.log('API key present:', !!apiKey, 'length:', apiKey.length);
+
   try {
     const response = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
