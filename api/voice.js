@@ -9,12 +9,13 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing text or voiceId' });
   }
 
+  console.log('voiceId:', voiceId, 'text length:', text.length);
+
   const apiKey = process.env.ELEVENLABS_API_KEY;
   if (!apiKey) {
     return res.status(500).json({ error: 'ElevenLabs API key not configured' });
   }
 
-  console.log('API key present:', !!apiKey, 'length:', apiKey.length);
 
   try {
     const response = await fetch(
