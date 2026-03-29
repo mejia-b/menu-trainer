@@ -137,6 +137,8 @@
   .btn-voice.listening .mic-dot { animation: pulse 0.75s infinite alternate; }
   @keyframes pulse { from { opacity:1; transform:scale(1); } to { opacity:0.3; transform:scale(0.7); } }
   .btn-sm { padding: 5px 11px; font-size: 12px; }
+  .btn-reset { border-color: rgba(212,112,112,0.3); color: var(--red); }
+  .btn-reset:hover { background: var(--red-bg); color: var(--red); }
 
   .nav-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
   .empty-state { text-align: center; padding: 4rem 2rem; color: var(--text-muted); font-size: 14px; border: 1px dashed var(--border); border-radius: 16px; margin-bottom: 1.25rem; }
@@ -152,6 +154,19 @@
     .container { padding: 1.25rem 1rem; }
     .btn { padding: 7px 12px; font-size: 12px; }
   }
+
+  body.light {
+  --bg: #f5f3ef;
+  --surface: #ffffff;
+  --surface2: #eceae4;
+  --border: rgba(0,0,0,0.08);
+  --border2: rgba(0,0,0,0.14);
+  --text: #1a1815;
+  --text-muted: #6a6860;
+  --text-dim: #a0a098;
+  --accent: #a07840;
+  --accent-dim: rgba(160,120,64,0.12);
+}
 </style>
 </head>
 <body>
@@ -164,6 +179,7 @@
       <div><strong id="h-needs">0</strong> to practice</div>
       <div><strong id="h-seen">0</strong>/<strong>44</strong> seen</div>
     </div>
+    <button class="settings-btn" onclick="toggleTheme()" id="theme-btn">☀ Light</button>
     <button class="settings-btn" onclick="openSettings()">⚙ AI Voice</button>
   </div>
 </header>
@@ -281,15 +297,12 @@
     <button class="btn" onclick="markMastered()">✓ Mastered</button>
     <button class="btn" onclick="markNeedsPractice()">↺ Needs practice</button>
     <button class="btn" onclick="speakDishName()" title="Read dish name aloud">🔊 Read name</button>
+    <button class="btn btn-reset" onclick="resetProgress()">⚠ Reset progress</button>
   </div>
 
   <div class="nav-row">
     <button class="btn" onclick="prevCard()">← Previous</button>
     <button class="btn" onclick="nextCard()">Next →</button>
-  </div>
-
-  <div class="reset-row">
-    <button class="reset-btn" onclick="resetProgress()">Reset all progress</button>
   </div>
 
 </div>
@@ -351,6 +364,14 @@ let deck = [], deckType = 'all', idx = 0;
 let isFlipped = false, isListening = false, isSpeaking = false;
 let recognition = null, spokenText = '', inputMode = 'voice';
 let currentAudio = null;
+
+
+// Dark and Light mode
+function toggleTheme() {
+  const isLight = document.body.classList.toggle('light');
+  document.getElementById('theme-btn').textContent = isLight ? '☾ Dark' : '☀ Light';
+  try { localStorage.setItem('menu_trainer_theme', isLight ? 'light' : 'dark'); } catch(e) {}
+}
 
 // Storage
 function loadScores() {
@@ -690,6 +711,7 @@ document.getElementById('settings-modal').addEventListener('click', function(e) 
 
 // Init
 loadScores(); loadSettings(); buildDeck(); renderCard(); updateHeaderStats(); updateTabCounts();
+try { if (localStorage.getItem('menu_trainer_theme') === 'light') { document.body.classList.add('light'); document.getElementById('theme-btn').textContent = '☾ Dark'; } } catch(e) {}
 </script>
 </body>
 </html>
