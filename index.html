@@ -185,7 +185,7 @@
     </p>
     <label>Voice</label>
     <select id="el-voice">
-      <option value="EXAVITQu4vr4xnSDxMaL">Bella — warm (female)</option>
+      <option value="hpp4J3VqNfWAUOO0d1Us">Bella — warm (female)</option>
       <option value="gJx1vCzNCD1EQHT212Ls">Ava — natural (female)</option>
       <option value="ErXwobaYiN019PkySvjV">Antoni — smooth (male)</option>
       <option value="pNInz6obpgDQGcFmaJgB">Adam — warm (male)</option>
@@ -346,7 +346,7 @@ const STORAGE_KEY = 'menu_trainer_scores_v1';
 const SETTINGS_KEY = 'menu_trainer_settings_v1';
 
 let scores = {};
-let settings = { voiceId: 'EXAVITQu4vr4xnSDxMaL', autoSpeak: 'no' };
+let settings = { voiceId: 'hpp4J3VqNfWAUOO0d1Us', autoSpeak: 'no' };
 let deck = [], deckType = 'all', idx = 0;
 let isFlipped = false, isListening = false, isSpeaking = false;
 let recognition = null, spokenText = '', inputMode = 'voice';
@@ -360,6 +360,9 @@ function loadScores() {
 function saveScores() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(scores)); } catch(e) {} }
 function loadSettings() {
   try { const s = localStorage.getItem(SETTINGS_KEY); if (s) settings = { ...settings, ...JSON.parse(s) }; } catch(e) {}
+  if (settings.voiceId === '21m00Tcm4TlvDq8ikWAM' || settings.voiceId === 'VR6AewLTigWG4xSOukaG' || settings.voiceId === 'EXAVITQu4vr4xnSDxMaL') {
+    settings.voiceId = 'hpp4J3VqNfWAUOO0d1Us';
+}
 }
 function saveSettingsToStorage() { try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch(e) {} }
 
