@@ -399,10 +399,7 @@ async function speak(text) {
     const res = await fetch('/api/voice', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        text,
-        voiceId: settings.voiceId
-      })
+      body: JSON.stringify({ text, voiceId: settings.voiceId })
     });
 
     if (!res.ok) throw new Error('TTS failed');
@@ -410,21 +407,25 @@ async function speak(text) {
     const blob = await res.blob();
     const url = URL.createObjectURL(blob);
 
-    currentAudio = new Audio(url);
-    isSpeaking = true;
+    return new Promise((resolve) => {
+      currentAudio = new Audio(url);
+      isSpeaking = true;
 
-    currentAudio.onended = () => {
-      isSpeaking = false;
-      setSpeakingUI(false);
-      URL.revokeObjectURL(url);
-    };
+      currentAudio.onended = () => {
+        isSpeaking = false;
+        setSpeakingUI(false);
+        URL.revokeObjectURL(url);
+        resolve();
+      };
 
-    currentAudio.onerror = () => {
-      isSpeaking = false;
-      setSpeakingUI(false);
-    };
+      currentAudio.onerror = () => {
+        isSpeaking = false;
+        setSpeakingUI(false);
+        resolve();
+      };
 
-    currentAudio.play();
+      currentAudio.play();
+    });
 
   } catch (e) {
     setSpeakingUI(false);
@@ -573,8 +574,10 @@ function markMastered() {
   scores[deck[idx].name].attempts = Math.max(scores[deck[idx].name].attempts, 1);
   saveScores(); updateHeaderStats(); updateTabCounts();
   showFeedback('great', 'Marked as mastered!');
-  speak('Great work! Marked as mastered.');
-  setTimeout(() => { if (deckType !== 'all') { buildDeck(); if (idx >= deck.length) idx = Math.max(0, deck.length-1); } nextCard(); }, 1100);
+  speak('Great work! Marked as mastered.').then(() => {
+    if (deckType !== 'all') { buildDeck(); if (idx >= deck.length) idx = Math.max(0, deck.length-1); }
+    nextCard();
+  });
 }
 
 function markNeedsPractice() {
@@ -583,8 +586,10 @@ function markNeedsPractice() {
   scores[deck[idx].name].attempts = Math.max(scores[deck[idx].name].attempts, 1);
   saveScores(); updateHeaderStats(); updateTabCounts();
   showFeedback('partial', 'Added to practice deck!');
-  speak('Added to your practice deck. Keep studying!');
-  setTimeout(() => { if (deckType === 'mastered') { buildDeck(); if (idx >= deck.length) idx = Math.max(0, deck.length-1); } nextCard(); }, 1100);
+  speak('Added to your practice deck. Keep studying!').then(() => {
+    if (deckType === 'mastered') { buildDeck(); if (idx >= deck.length) idx = Math.max(0, deck.length-1); }
+    nextCard();
+  });
 }
 
 function resetProgress() {
