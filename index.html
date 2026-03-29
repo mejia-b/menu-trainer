@@ -7,16 +7,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f0e0c;
-    --surface: #1a1915;
-    --surface2: #222119;
+    --bg: #0d0c09;
+    --surface: #1c1a16;
+    --surface2: #242219;
     --border: rgba(255,255,255,0.08);
     --border2: rgba(255,255,255,0.14);
     --text: #f0ede6;
     --text-muted: #8a8780;
     --text-dim: #4a4845;
-    --accent: #c9a96e;
-    --accent-dim: rgba(201,169,110,0.15);
+    --accent: #b8955a;
+    --accent-dim: rgba(184,149,90,0.15);
     --green: #6aab7e;
     --green-bg: rgba(106,171,126,0.12);
     --red: #d47070;
@@ -30,8 +30,8 @@
   body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.6; }
 
   header { border-bottom: 1px solid var(--border); padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: var(--bg); z-index: 100; }
-  .logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 500; color: var(--accent); letter-spacing: 0.02em; }
-  .logo span { color: var(--text-muted); font-weight: 400; font-size: 0.9rem; margin-left: 0.5rem; font-family: 'DM Sans', sans-serif; }
+  .logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 400; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+  .logo span { display: block; color: var(--accent); font-weight: 500; font-size: 1.4rem; margin-left: 0; font-family: 'Playfair Display', serif; letter-spacing: 0.02em; text-transform: none; }
   .header-right { display: flex; align-items: center; gap: 1.5rem; }
   .header-stats { display: flex; gap: 1.5rem; font-size: 13px; color: var(--text-muted); }
   .header-stats strong { color: var(--text); font-weight: 500; }
@@ -70,7 +70,7 @@
   .card-inner { position: relative; width: 100%; min-height: 280px; transform-style: preserve-3d; transition: transform 0.55s cubic-bezier(0.4,0,0.2,1); }
   .card-inner.flipped { transform: rotateY(180deg); }
   .card-face { position: absolute; width: 100%; min-height: 280px; backface-visibility: hidden; border: 1px solid var(--border2); border-radius: 16px; padding: 2rem; background: var(--surface); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: border-color 0.2s; }
-  .card-face:hover { border-color: rgba(201,169,110,0.25); }
+  .card-face:hover { border-color: rgba(184,149,90,0.35); box-shadow: 0 0 24px rgba(184,149,90,0.06); }
   .card-back { transform: rotateY(180deg); align-items: flex-start; justify-content: flex-start; }
   .card-hint { font-size: 11px; color: var(--text-dim); position: absolute; bottom: 14px; right: 18px; letter-spacing: 0.04em; text-transform: uppercase; }
   .dish-name { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 500; color: var(--text); text-align: center; line-height: 1.3; margin-bottom: 1rem; }
@@ -156,16 +156,17 @@
   }
 
   body.light {
-  --bg: #f5f3ef;
-  --surface: #ffffff;
-  --surface2: #eceae4;
-  --border: rgba(0,0,0,0.08);
-  --border2: rgba(0,0,0,0.14);
-  --text: #1a1815;
-  --text-muted: #6a6860;
-  --text-dim: #a0a098;
-  --accent: #a07840;
-  --accent-dim: rgba(160,120,64,0.12);
+  --bg: #f7f4ee;
+  --surface: #fdfbf7;
+  --surface2: #f0ece3;
+  --border: rgba(0,0,0,0.07);
+  --border2: rgba(0,0,0,0.12);
+  --text: #1a1710;
+  --text-muted: #6b6658;
+  --text-dim: #a09880;
+  --accent: #96721e;
+  --accent-dim: rgba(150,114,30,0.12);
+}
 }
 </style>
 </head>
