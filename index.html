@@ -367,7 +367,6 @@ function saveSettingsToStorage() { try { localStorage.setItem(SETTINGS_KEY, JSON
 
 // Settings modal
 function openSettings() {
-  document.getElementById('el-key').value = settings.apiKey;
   document.getElementById('el-voice').value = settings.voiceId;
   document.getElementById('el-auto').value = settings.autoSpeak;
   document.getElementById('settings-modal').classList.add('open');
