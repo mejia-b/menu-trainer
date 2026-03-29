@@ -185,11 +185,9 @@
     </p>
     <label>Voice</label>
     <select id="el-voice">
-      <option value="21m00Tcm4TlvDq8ikWAM">Rachel — calm &amp; clear (female)</option>
-      <option value="AZnzlk1XvdvUeBnXmlld">Domi — confident (female)</option>
       <option value="EXAVITQu4vr4xnSDxMaL">Bella — warm (female)</option>
+      <option value="AZnzlk1XvdvUeBnXmlld">Domi — confident (female)</option>
       <option value="ErXwobaYiN019PkySvjV">Antoni — smooth (male)</option>
-      <option value="VR6AewLTigWG4xSOukaG">Arnold — deep (male)</option>
       <option value="pNInz6obpgDQGcFmaJgB">Adam — warm (male)</option>
     </select>
     <label>Auto-speak dish name on card load</label>
@@ -348,7 +346,7 @@ const STORAGE_KEY = 'menu_trainer_scores_v1';
 const SETTINGS_KEY = 'menu_trainer_settings_v1';
 
 let scores = {};
-let settings = { voiceId: '21m00Tcm4TlvDq8ikWAM', autoSpeak: 'no' };
+let settings = { voiceId: 'EXAVITQu4vr4xnSDxMaL', autoSpeak: 'no' };
 let deck = [], deckType = 'all', idx = 0;
 let isFlipped = false, isListening = false, isSpeaking = false;
 let recognition = null, spokenText = '', inputMode = 'voice';
