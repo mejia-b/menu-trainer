@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "api/voice.js": {
-      "runtime": "nodejs20.x"
-    }
-  }
-}
