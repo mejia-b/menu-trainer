@@ -478,6 +478,28 @@ function buildDeck() {
   else deck = MENU.filter(d => scores[d.name].status === 'mastered');
 }
 
+
+function restoreCardHTML() {
+  document.getElementById('card-wrap').innerHTML = `
+    <div class="card-area" onclick="flipCard()">
+      <div class="card-inner" id="card-inner">
+        <div class="card-face card-front">
+          <div class="status-badge" id="status-badge" style="display:none"></div>
+          <div class="tag-row" id="front-tags"></div>
+          <div class="dish-name" id="dish-name">Loading...</div>
+          <div class="card-hint">tap to reveal ingredients</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-header">Ingredients</div>
+          <div class="ing-grid" id="ing-grid"></div>
+          <div class="special-notes" id="special-notes"></div>
+          <div class="card-hint">tap to flip back</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+
 // Card rendering
 function renderCard() {
   clearFeedback(); clearInput(); isFlipped = false;
@@ -485,9 +507,14 @@ function renderCard() {
   if (ci) ci.classList.remove('flipped');
 
   if (!deck.length) {
-    document.getElementById('card-wrap').innerHTML = `<div class="empty-state"><h3>No cards here yet</h3><p>Use the "Needs practice" or "Mastered" buttons while studying all cards to populate these decks.</p></div>`;
+    document.getElementById('card-wrap').innerHTML = `
+      <div class="empty-state">
+        <h3>No cards here yet</h3>
+        <p>Use the "Needs practice" or "Mastered" buttons while studying all cards to populate these decks.</p>
+      </div>`;
     document.getElementById('counter').textContent = '0 cards';
     document.getElementById('progress').style.width = '0%';
+    restoreCardHTML();
     return;
   }
 
@@ -574,7 +601,7 @@ function markMastered() {
   scores[deck[idx].name].attempts = Math.max(scores[deck[idx].name].attempts, 1);
   saveScores(); updateHeaderStats(); updateTabCounts();
   showFeedback('great', 'Marked as mastered!');
-  speak('Great work! Marked as mastered.').then(() => {
+  speak('Great work!').then(() => {
     if (deckType !== 'all') { buildDeck(); if (idx >= deck.length) idx = Math.max(0, deck.length-1); }
     nextCard();
   });
