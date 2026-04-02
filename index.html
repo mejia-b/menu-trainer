@@ -589,18 +589,23 @@ function checkAnswer() {
   const lower = input.toLowerCase();
   let matched = [], missed = [], wrong = [];
 
+  const normalize = str => str.toLowerCase().replace(/s\b/g, '').trim();
+
   d.ingredients.forEach(ing => {
-    const words = ing.toLowerCase().split(' ').filter(w => w.length > 3);
-    const hit = words.some(w => lower.includes(w)) || lower.includes(ing.toLowerCase());
+    const normalizedIng = normalize(ing);
+    const ingWords = normalizedIng.split(' ').filter(w => w.length > 3);
+    const normalizedInput = normalize(lower);
+    const hit = ingWords.some(w => normalizedInput.includes(w)) || normalizedInput.includes(normalizedIng);
     if (hit) matched.push(ing); else missed.push(ing);
   });
 
   // Check for ingredients the user said that are NOT in the dish
   const inputWords = lower.split(/[\s,]+/).filter(w => w.length > 3);
   inputWords.forEach(word => {
+    const normalizedWord = normalize(word);
     const isReal = d.ingredients.some(ing => {
-      const ingWords = ing.toLowerCase().split(' ').filter(w => w.length > 3);
-      return ingWords.some(w => w.includes(word) || word.includes(w));
+      const ingWords = normalize(ing).split(' ').filter(w => w.length > 3);
+      return ingWords.some(w => w.includes(normalizedWord) || normalizedWord.includes(w));
     });
     if (!isReal) wrong.push(word);
   });
