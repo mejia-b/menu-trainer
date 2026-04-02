@@ -587,36 +587,54 @@ function checkAnswer() {
   if (!input) { showFeedback('wrong', 'Enter or speak some ingredients first, then check your answer.'); return; }
   const d = deck[idx];
   const lower = input.toLowerCase();
-  let matched = [], missed = [];
+  let matched = [], missed = [], wrong = [];
+
   d.ingredients.forEach(ing => {
     const words = ing.toLowerCase().split(' ').filter(w => w.length > 3);
     const hit = words.some(w => lower.includes(w)) || lower.includes(ing.toLowerCase());
     if (hit) matched.push(ing); else missed.push(ing);
   });
+
+  // Check for ingredients the user said that are NOT in the dish
+  const inputWords = lower.split(/[\s,]+/).filter(w => w.length > 3);
+  inputWords.forEach(word => {
+    const isReal = d.ingredients.some(ing => {
+      const ingWords = ing.toLowerCase().split(' ').filter(w => w.length > 3);
+      return ingWords.some(w => w.includes(word) || word.includes(w));
+    });
+    if (!isReal) wrong.push(word);
+  });
+
   document.querySelectorAll('.ing-chip').forEach(chip => {
     const ing = chip.dataset.ing;
     chip.classList.toggle('matched', matched.some(m => m.toLowerCase() === ing));
     chip.classList.toggle('missed', missed.some(m => m.toLowerCase() === ing));
   });
+
   if (!isFlipped) flipCard();
   const pct = matched.length / d.ingredients.length;
   scores[d.name].attempts++;
-  let cls, msg, spokenMsg;
-  if (pct === 1) {
+
+  let cls, msg;
+  if (pct === 1 && wrong.length === 0) {
     scores[d.name].correct++; cls = 'great';
     msg = `Perfect! All ${d.ingredients.length} ingredients correct.`;
-    spokenMsg = `Perfect! You got all ${d.ingredients.length} ingredients for ${d.name}. Excellent work!`;
+  } else if (pct === 1 && wrong.length > 0) {
+    cls = 'partial';
+    msg = `You got all ${d.ingredients.length} correct but also named ${wrong.length} ingredient${wrong.length > 1 ? 's' : ''} not in this dish: ${wrong.join(', ')}.`;
   } else if (pct >= 0.6) {
     cls = 'partial';
-    msg = `Good — got ${matched.length} of ${d.ingredients.length}. Missed: ${missed.join(', ')}.`;
-    spokenMsg = `Good job! You got ${matched.length} out of ${d.ingredients.length}. You missed ${missed.join(', ')}.`;
+    msg = `Good — got ${matched.length} of ${d.ingredients.length}.`;
+    if (missed.length) msg += ` Missed: ${missed.join(', ')}.`;
+    if (wrong.length) msg += ` ⚠ Not in this dish: ${wrong.join(', ')}.`;
   } else {
     cls = 'wrong';
-    msg = `Keep at it! Got ${matched.length} of ${d.ingredients.length}. Missed: ${missed.join(', ')}.`;
-    spokenMsg = `Keep practicing! You only got ${matched.length} out of ${d.ingredients.length}. The missing ingredients were ${missed.join(', ')}.`;
+    msg = `Keep at it! Got ${matched.length} of ${d.ingredients.length}.`;
+    if (missed.length) msg += ` Missed: ${missed.join(', ')}.`;
+    if (wrong.length) msg += ` ⚠ Not in this dish: ${wrong.join(', ')}.`;
   }
+
   showFeedback(cls, msg);
-  //speak(spokenMsg);
   saveScores(); updateHeaderStats();
 }
 
