@@ -704,17 +704,29 @@ function startVoice() {
     vt.textContent = 'Listening — say your ingredients...';
     vt.classList.add('has-text');
   };
-  recognition.onresult = (e) => {
-    let interim = '', final = '';
+recognition.onresult = (e) => {
+    let interim = '';
     for (let i = e.resultIndex; i < e.results.length; i++) {
       const t = e.results[i][0].transcript;
-      if (e.results[i].isFinal) final += t; else interim += t;
+      if (e.results[i].isFinal) {
+        const trimmed = t.trim();
+        if (trimmed && !spokenText.toLowerCase().includes(trimmed.toLowerCase())) {
+          spokenText += ' ' + trimmed;
+        }
+      } else {
+        interim += t;
+      }
     }
-    if (final) spokenText += ' ' + final;
     document.getElementById('voice-text').textContent = (spokenText + ' ' + interim).trim() || 'Listening...';
   };
   recognition.onerror = (e) => { if (e.error !== 'no-speech') stopVoice(); };
-  recognition.onend = () => { if (isListening) { try { recognition.start(); } catch(e) {} } };
+  recognition.onend = () => {
+  if (isListening) {
+    setTimeout(() => {
+      try { recognition.start(); } catch(e) {}
+    }, 300);
+  }
+};
   try { recognition.start(); } catch(e) { showFeedback('wrong', 'Could not start voice. Try refreshing the page.'); }
 }
 function stopVoice() {
