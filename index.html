@@ -751,5 +751,11 @@ document.getElementById('settings-modal').addEventListener('click', function(e) 
 loadScores(); loadSettings(); buildDeck(); renderCard(); updateHeaderStats(); updateTabCounts();
 try { if (localStorage.getItem('menu_trainer_theme') === 'light') { document.body.classList.add('light'); document.getElementById('theme-btn').textContent = '☾ Dark'; } } catch(e) {}
 </script>
+
+<!-- Vercel Web Analytics -->
+<script type="module">
+  import { inject } from 'https://cdn.jsdelivr.net/npm/@vercel/analytics@2/dist/index.mjs';
+  inject();
+</script>
 </body>
 </html>
